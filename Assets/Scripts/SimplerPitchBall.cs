@@ -19,6 +19,12 @@ public class SimplerPitchBall : MonoBehaviour
 
     private Vector3 acceleration;
 
+    Vector3 spinAxis;
+    float rpm = 200;
+    float angularSpeed;
+
+    float degreesPerSecond = 10000;
+
     private void Start()
     {
         //rb = GetComponent<Rigidbody>();
@@ -30,9 +36,9 @@ public class SimplerPitchBall : MonoBehaviour
         dragJerk = (dragPct * computedVelocity.z) * 2f / (timeToPlate * timeToPlate);
         Debug.Log("Drag Jerk: " + dragJerk);
 
-        jerk = new Vector3(0, 0, dragJerk);
+        jerk = new Vector3(27.2f, -27.2f, dragJerk);
 
-        Vector3 computedVelocityWithDrag = SecondTestFunction(new Vector3(-1, 2.2f, 17), new Vector3(0, 1, 0),
+        Vector3 computedVelocityWithDrag = SecondTestFunction(new Vector3(-1, 2.2f, 17), new Vector3(1, 1, 0),
             new Vector3(10f, -9.81f, 0), jerk, 0.5f);
 
         Debug.Log("Computed Velocity With Drag: " + computedVelocityWithDrag);
@@ -40,6 +46,12 @@ public class SimplerPitchBall : MonoBehaviour
         velocity = computedVelocityWithDrag; // -2.5, 2.455f, -34 for 0,0,0 from 0,0,17
 
         acceleration = hMovement + gravity;
+
+        spinAxis = new Vector3(0, -10, 0).normalized;
+        angularSpeed = rpm * Mathf.PI * 2f / 60f;
+        Debug.Log("Angular Speed: " + angularSpeed);
+
+
     }
 
     private void FixedUpdate()
@@ -52,16 +64,16 @@ public class SimplerPitchBall : MonoBehaviour
     {
         if (!pitchLogged)
         {
-            pitchTime += Time.deltaTime;
-
-            acceleration += jerk * Time.deltaTime;
-
+            float deltaTime = Time.deltaTime;
+            pitchTime += deltaTime;
+            acceleration += jerk * deltaTime;
             //velocity += hMovement * Time.deltaTime;
             //velocity += gravity * Time.deltaTime;
+            velocity += acceleration * deltaTime;
+            transform.position += velocity * deltaTime;
 
-            velocity += acceleration * Time.deltaTime;
-
-            transform.position += velocity * Time.deltaTime;
+            float angle = degreesPerSecond * deltaTime;
+            transform.Rotate(spinAxis, angle, Space.World);
 
             if (pitchTime >= timeToPlate)
             {
@@ -125,6 +137,14 @@ public class SimplerPitchBall : MonoBehaviour
         float v0z = (dz - 0.5f * az * t2 - (1f / 6f) * jz * t3) / t;
 
         return new Vector3(v0x, v0y, v0z);
+    }
+
+    private Vector3 ThirdTestFunction(Vector3 releasePoint, Vector3 targetPos,
+        Vector3[] constantAccel, Vector3[] jerk, float timeToTarget)
+    {
+        if (constantAccel.Length != jerk.Length) Debug.LogError("ConstantAccel and Jerk are different Lengths."); return Vector3.zero;
+
+
     }
 
 }
