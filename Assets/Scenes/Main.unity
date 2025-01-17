@@ -930,14 +930,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d293ac856821cf544814797ac404db11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLocation: {x: 0.3, y: 1.4, z: 0}
+  targetLocation: {x: 0, y: 1, z: 0}
   pitchers:
   - pitches:
-    - pitchSpeed: -34
+    - pitchSpeed: 34
       horizontalBreak: 10
       verticalBreak: -10
-      horizontalJerk: 27.2
-      verticalJerk: -27.2
+      sharpBreakPct: 0.1
+      customGravity: -9.81
+      customDragPct: -0.1
     releasePoint: {x: -1, y: 2.2, z: 17}
   ballTransform: {fileID: 918781867}
   displayBall: {fileID: 1748323700}
