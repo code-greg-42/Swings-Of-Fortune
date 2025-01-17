@@ -8,6 +8,7 @@ public class PitcherManagerTest : MonoBehaviour
 
     [Header("Reference")]
     [SerializeField] private Transform ballTransform;
+    [SerializeField] private GameObject displayBall;
 
     Vector3 ballVelocity;
     Vector3 ballAcceleration;
@@ -17,6 +18,8 @@ public class PitcherManagerTest : MonoBehaviour
 
     private bool pitchLogged = false;
     private float pitchTime = 0.0f;
+
+    private bool pitchFinished = false;
 
     private void Start()
     {
@@ -35,7 +38,7 @@ public class PitcherManagerTest : MonoBehaviour
 
     private void Update()
     {
-        if (!pitchLogged)
+        if (!pitchFinished)
         {
             float deltaTime = Time.deltaTime;
             pitchTime += deltaTime;
@@ -43,12 +46,19 @@ public class PitcherManagerTest : MonoBehaviour
             ballVelocity += ballAcceleration * deltaTime;
             ballTransform.position += ballVelocity * deltaTime;
 
-            if (pitchTime >= 0.5f)
+            if (pitchTime >= 0.5f && !pitchLogged)
             {
+                displayBall.SetActive(true);
+                displayBall.transform.position = targetLocation;
                 Debug.Log("Pitch Location Calculated At: " + pitchTime);
                 Debug.Log("Pitch Location: " + ballTransform.position);
                 Debug.Log("Pitch Velocity: " + ballVelocity);
                 pitchLogged = true;
+            }
+
+            if (pitchTime >= 1.0f)
+            {
+                pitchFinished = true;
             }
         }
     }
