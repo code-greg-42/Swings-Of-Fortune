@@ -12,7 +12,7 @@ public class SpecificPitchTest
 
     // ADD MIN AND MAX RANGES FOR SPEED AND BREAK LATER
 
-    private const float dragPct = 0.1f;
+    private const float dragPct = -0.1f;
     private Vector3 gravity = new(0, -9.81f, 0);
 
     public (Vector3, float, Vector3, Vector3) GetPitch(Vector3 releasePoint, Vector3 targetLocation)

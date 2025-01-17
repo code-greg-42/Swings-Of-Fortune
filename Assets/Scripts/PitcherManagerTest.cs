@@ -29,6 +29,8 @@ public class PitcherManagerTest : MonoBehaviour
         Debug.Log("Jerk: " + jerk);
 
         ballVelocity = initialVelocity;
+        ballAcceleration = accel;
+        ballJerk = jerk;
     }
 
     private void Update()
